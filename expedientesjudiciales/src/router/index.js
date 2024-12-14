@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Register from '../ventanas/Auth/Register.vue';
 import Login from '../ventanas/Auth/Login.vue';
-
+import Home from '../ventanas/Home.vue';
+import Records from '../ventanas/Records/Records.vue';
 const routes = [
   {
     path: '/register',
@@ -14,8 +15,14 @@ const routes = [
     component: Login,
   },
   {
-    path: '/',
-    redirect: '/login', // Redireccionar a login por defecto
+    path: '/home',
+    name: 'Home',
+    component: Home,
+  },
+  {
+    path: '/records',
+    name: 'Records',
+    component: Records,
   },
 ];
 
