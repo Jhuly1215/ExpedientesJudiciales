@@ -21,7 +21,7 @@
             <th>Judge</th>
             <th>Participants</th>
             <th>Date</th>
-            <th>Estado</th>
+            <th>Status</th>
             <th>Priority</th>
             <th>Movements</th>
             <th>Audiences</th>
@@ -90,7 +90,7 @@
   
   <script>
   import axios from "axios";
-  import NewRecord from "./NewRecord.vue"; // Importar el componente modal
+  import NewRecord from "./NewRecord.vue"; 
   import EditRecord from "./EditRecord.vue";
   export default {
     components: {
@@ -100,31 +100,41 @@
     data() {
       return {
         searchQuery: "",
-        records: [], // Datos simulados o conectados al backend
+        records: [], 
         showNewRecordModal: false,
         showEditRecordModal: false,
       };
     },
     computed: {
-      filteredRecords() {
-        if (!this.searchQuery) {
-          return this.records;
-        }
-        return this.records.filter((record) =>
-          Object.values(record).some((value) =>
-            String(value).toLowerCase().includes(this.searchQuery.toLowerCase())
-          )
-        );
-      },
+        filteredRecords() {
+            if (!this.searchQuery) {
+            return this.records;
+            }
+            const searchQueryLower = this.searchQuery.toLowerCase();
+
+            return this.records.filter((record) => {
+           
+            const matchBasicFields = Object.values(record).some((value) =>
+                String(value).toLowerCase().includes(searchQueryLower)
+            );
+            const matchParticipants = record.participantes?.some(
+                (participant) =>
+                participant.nombre.toLowerCase().includes(searchQueryLower) ||
+                participant.rol.toLowerCase().includes(searchQueryLower)
+            );
+
+            return matchBasicFields || matchParticipants;
+            });
+        },
     },
     methods: {
         async fetchRecords() {
             try {
-                // Llama al backend para obtener los registros
+                
                 const response = await axios.get("http://localhost:5000/api/record");
                 this.records = response.data.map((doc) => ({
                 ...doc,
-                firebaseId: doc.firebaseId || doc.id, // Usa el ID de Firebase como clave principal
+                firebaseId: doc.firebaseId || doc.id,
                 participantes: typeof doc.participantes === "string"
                 ? JSON.parse(doc.participantes)
                 : doc.participantes,
@@ -150,12 +160,12 @@
       this.selectedRecord = null;
     },
     editRecord(record) {
-        this.selectedRecord = { ...record }; // Incluye firebaseId en selectedRecord
+        this.selectedRecord = { ...record }; 
         this.showEditRecordModal = true;
         },
 
       updateRecordInList(updatedRecord) {
-        // Actualizar el registro en la lista local
+  
         const index = this.records.findIndex((r) => r.firebaseId === updatedRecord.firebaseId);
         if (index !== -1) {
             this.records.splice(index, 1, updatedRecord);
@@ -163,14 +173,14 @@
       },
       async saveRecord(newRecord) {
         try {
-          // Guardar el registro en el backend
+          
           const response = await axios.post("http://localhost:5000/api/record", newRecord);
           const savedRecord = response.data;
   
-          // Agregar el nuevo registro al listado
+          
           this.records.push({
             ...newRecord,
-            firebaseId: savedRecord.id, // ID generado por Firebase
+            firebaseId: savedRecord.id,
           });
           this.closeNewRecordModal();
         } catch (error) {
@@ -194,7 +204,7 @@
       },
     },
     mounted() {
-      this.fetchRecords(); // Cargar registros al montar el componente
+      this.fetchRecords(); 
     },
   };
   </script>
