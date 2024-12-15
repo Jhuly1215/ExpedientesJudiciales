@@ -40,17 +40,21 @@ export default {
       }
 
       try {
+        // Enviar credenciales al backend
         const response = await axios.post("http://localhost:5000/api/auth/login", {
           email: this.email,
           password: this.password,
         });
 
+        const token = response.data.token; // Asume que el backend devuelve el token
+
+        // Guardar el token en localStorage
+        localStorage.setItem("authToken", token);
+
         alert("Login successful!");
-        console.log(response.data);
-        this.$router.push("/"); // Ajusta la ruta según tu aplicación
+        this.$router.push("/home"); // Redirigir a la página principal
       } catch (error) {
-        alert("Login failed: " + (error.response?.data?.error || "Unexpected error"));
-        console.error("Login error:", error);
+        alert("Login failed: " + error.response.data.error || error.message);
       }
     },
   },
