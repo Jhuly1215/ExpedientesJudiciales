@@ -4,7 +4,7 @@
 MyGestor is a web platform designed to support judicial professionals in the United States by streamlining case and document management. The platform provides tools to automate repetitive tasks, organize case files, and manage hearings efficiently. Leveraging modern technologies such as Vue.js, Node.js, Express, and Firebase, MyGestor aims to simplify judicial workflows while ensuring the security of sensitive citizen data.
 
 ## Movil application 
-The github link of the movil application is here: https://github.com/cesarveraa/MyGestor
+The github link of the movil application is here: https://github.com/cesarveraa/MyGestor  
 and you cand download the application here: https://drive.google.com/drive/folders/1wof8lvaCnFzXkdKVWKQqGm2rafxD10xJ
 
 
