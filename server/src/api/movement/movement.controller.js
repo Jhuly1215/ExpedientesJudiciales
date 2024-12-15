@@ -56,18 +56,23 @@ const addMovement = async (req, res) => {
       res.status(500).json({ error: 'Error al crear el movimiento', details: error.message });
     }
   };
-const deleteMovement = async (req, res) => {
-    const { id } = req.params;
+  const deleteMovement = async (req, res) => {
+    const { recordId, movementId } = req.params;
+  
+    console.log("Deleting movement from Record ID:", recordId);
+    console.log("Deleting Movement ID:", movementId);
   
     try {
-      const movementRef = doc(db, "movements", id);
+      const movementRef = doc(db, `records/${recordId}/movements`, movementId);
       await deleteDoc(movementRef);
   
-      res.status(200).json({ message: "Movimiento eliminado exitosamente" });
+      res.status(200).json({ message: "Movement deleted successfully" });
     } catch (error) {
-      res.status(500).json({ error: "Error al eliminar el movimiento", details: error.message });
+      console.error("Error deleting movement:", error);
+      res.status(500).json({ error: "Failed to delete movement" });
     }
-};
+  };
+  
 const updateMovement = async (req, res) => {
   const { recordId, movementId } = req.params; // Obtener IDs de la ruta
   console.log("Updating movement within record:", recordId, "Movement ID:", movementId); // Debug

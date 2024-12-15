@@ -4,7 +4,7 @@ const { getMovements,deleteMovement, addMovement, updateMovement} = require('./m
 
 
 router.get('/:recordId', getMovements);
-router.delete('/:id', deleteMovement);
+router.delete("/:recordId/:movementId", deleteMovement);
 router.post('/:recordId', addMovement);
 router.put("/:recordId/:movementId", updateMovement);
 
