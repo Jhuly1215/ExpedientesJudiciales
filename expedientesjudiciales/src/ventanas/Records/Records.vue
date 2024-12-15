@@ -51,7 +51,7 @@
             </td>
             <td>{{ record.prioridad }}</td>
             <td>
-                <button class="btn-action" @click="viewMovements(record.firebaseId)">Ver</button>
+                <button class="btn-action" @click="viewMovements(record.firebaseId)">View Movements</button>
             </td>
             <td>
                 <button class="btn-action" @click="$router.push({ name: 'Audiences', params: { recordId: record.firebaseId } })">
@@ -60,7 +60,7 @@
             </td>
 
             <td>
-              <button class="btn-edit" @click="editRecord(record)">✏️</button>
+              <button class="btn-edit" @click="editRecord(record)">✎</button>
               <button class="btn-delete" @click="deleteRecord(record.firebaseId)">🗑️</button>
             </td>
           </tr>
@@ -81,12 +81,14 @@
         @save="saveRecord"
       />
       <EditRecord
-        v-if="showEditRecordModal"
         :show="showEditRecordModal"
         :record="selectedRecord"
+        :userId="currentUserId" 
         @close="closeEditRecordModal"
         @save="updateRecordInList"
-        />
+      />
+
+
     </div>
   </template>
   
@@ -107,6 +109,7 @@
         records: [], 
         showNewRecordModal: false,
         showEditRecordModal: false,
+        currentUserId: null,
       };
     },
     computed: {
@@ -212,8 +215,21 @@
         },
     },
     mounted() {
-      this.fetchRecords(); 
+      this.fetchRecords();
+      const token = localStorage.getItem("authToken");
+      const userId = localStorage.getItem("userId");
+
+      if (token && userId) {
+        console.log("Token obtenido:", token);
+        console.log("User ID obtenido:", userId);
+        this.currentUserId = userId; // Asigna el userId aquí
+      } else {
+        console.error("No user is logged in. Redirecting to login.");
+        this.$router.push("/login");
+      }
     },
+
+
   };
   </script>
   <style scoped>
@@ -291,6 +307,28 @@
 .inactive {
   color: red;
   font-weight: bold;
+}
+.btn-action{
+  background-color: #7F9CCA;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-edit{
+    color: #000000;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-delete{
+  color: #000000;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
   </style>

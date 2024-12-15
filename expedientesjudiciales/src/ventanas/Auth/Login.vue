@@ -40,23 +40,27 @@ export default {
       }
 
       try {
-        // Enviar credenciales al backend
         const response = await axios.post("http://localhost:5000/api/auth/login", {
           email: this.email,
           password: this.password,
         });
 
-        const token = response.data.token; // Asume que el backend devuelve el token
+        const { token, userId } = response.data;
 
-        // Guardar el token en localStorage
+        // Almacenar el token y el userId en localStorage
         localStorage.setItem("authToken", token);
+        localStorage.setItem("userId", userId);
 
         alert("Login successful!");
-        this.$router.push("/home"); // Redirigir a la página principal
+        console.log("Token y User ID almacenados:", token, userId);
+
+        this.$router.push("/home");
       } catch (error) {
-        alert("Login failed: " + error.response.data.error || error.message);
+        console.error("Login failed:", error.response?.data || error.message);
+        alert("Login failed: " + (error.response?.data.error || error.message));
       }
     },
+
   },
 };
 </script>

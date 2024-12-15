@@ -18,15 +18,17 @@ const authRoutes = require('./src/api/auth/auth.routes');
 const recordRoutes = require('./src/api/record/record.routes');
 const movementRoutes = require('./src/api/movement/movement.routes');
 const audienceRoutes = require('./src/api/audience/audience.routes');
+const chatRoutes = require('./src/api/services/chat.routes');
+const documentRoutes = require("./src/api/document/document.routes");
+
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes); 
 app.use('/api/record', recordRoutes); 
 app.use('/api/movement', movementRoutes);
 app.use('/api/audience', audienceRoutes);
-
-
-
+app.use("/api/chat", chatRoutes);
+app.use("/api/documents", documentRoutes);
 
 // Prueba de conexión con Firestore
 db ? console.log("Firestore conectado correctamente") : console.error("Error al conectar con Firestore");
