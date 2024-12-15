@@ -5,7 +5,7 @@ MyGestor is a web platform designed to support judicial professionals in the Uni
 
 ## Movil application 
 The github link of the movil application is here: https://github.com/cesarveraa/MyGestor  
-and you cand download the application here: https://drive.google.com/drive/folders/1wof8lvaCnFzXkdKVWKQqGm2rafxD10xJ
+and you can also download the application here: https://drive.google.com/drive/folders/1wof8lvaCnFzXkdKVWKQqGm2rafxD10xJ
 
 
 ## Features
