@@ -1,5 +1,5 @@
 const { db } = require('../../config/firebaseConfig');
-const { collection, addDoc, getDocs, doc, deleteDoc, updateDoc } = require("firebase/firestore");
+const { collection, addDoc, getDocs, doc, deleteDoc, updateDoc, getDoc  } = require("firebase/firestore");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" }); // Carpeta temporal para archivos
 
@@ -98,9 +98,32 @@ const deleteRecord = async (req, res) => {
   }
 };
 
+const getRecordById = async (req, res) => {
+  const { recordId } = req.params; // Obtiene el recordId desde los parámetros
+
+  try {
+    const recordRef = doc(db, 'records', recordId); // Referencia al documento
+    const recordSnapshot = await getDoc(recordRef); // Obtiene el documento
+
+    if (!recordSnapshot.exists()) {
+      return res.status(404).json({ error: 'Record not found' }); // Error si no existe
+    }
+
+    // Devuelve los datos del documento, incluyendo el ID
+    res.status(200).json({
+      id: recordSnapshot.id, // ID del documento
+      ...recordSnapshot.data(), // Datos del documento
+    });
+  } catch (error) {
+    console.error('Error fetching record:', error.message);
+    res.status(500).json({ error: 'Error fetching record', details: error.message });
+  }
+};
+
 module.exports = {
   createRecord,
   getRecords,
   updateRecord,
   deleteRecord,
+  getRecordById
 };

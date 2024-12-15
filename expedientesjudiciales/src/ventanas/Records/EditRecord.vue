@@ -55,8 +55,8 @@
           <div class="form-group">
             <label for="estado">Status</label>
             <select v-model="editableRecord.estado" required>
-              <option :value="true">Active</option>
-              <option :value="false">Inactive</option>
+              <option :value=true>Active</option>
+              <option :value=false>Inactive</option>
             </select>
           </div>
   

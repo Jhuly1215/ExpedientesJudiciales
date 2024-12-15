@@ -1,5 +1,5 @@
 const express = require("express");
-const { createRecord, getRecords, updateRecord, deleteRecord } = require("./record.controller");
+const { createRecord, getRecords, updateRecord, deleteRecord, getRecordById } = require("./record.controller");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
@@ -10,6 +10,7 @@ router.put("/:id", upload.single("archivo"), updateRecord);
 router.get("/", getRecords);
 router.put("/:id", updateRecord);
 router.delete("/:id", deleteRecord);
+router.get('/:recordId', getRecordById);
 
 module.exports = router;
 

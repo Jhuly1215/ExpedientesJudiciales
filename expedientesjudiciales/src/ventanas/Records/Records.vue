@@ -51,11 +51,14 @@
             </td>
             <td>{{ record.prioridad }}</td>
             <td>
-              <button class="btn-action">Ver</button>
+                <button class="btn-action" @click="viewMovements(record.firebaseId)">Ver</button>
             </td>
             <td>
-              <button class="btn-action">Ver</button>
+                <button class="btn-action" @click="$router.push({ name: 'Audiences', params: { recordId: record.firebaseId } })">
+                    View Audiences
+                </button>
             </td>
+
             <td>
               <button class="btn-edit" @click="editRecord(record)">✏️</button>
               <button class="btn-delete" @click="deleteRecord(record.firebaseId)">🗑️</button>
@@ -92,6 +95,7 @@
   import axios from "axios";
   import NewRecord from "./NewRecord.vue"; 
   import EditRecord from "./EditRecord.vue";
+
   export default {
     components: {
       NewRecord,
@@ -144,64 +148,68 @@
                 console.error("Error al obtener los expedientes:", error.response?.data || error.message);
             }
         },
-
-      handleSearch() {
-        console.log("Buscando:", this.searchQuery);
-      },
-      openNewRecordModal() {
-        this.showNewRecordModal = true;
-      },
-      closeNewRecordModal() {
-        this.showNewRecordModal = false;
-      },
-
-      closeEditRecordModal() {
-      this.showEditRecordModal = false;
-      this.selectedRecord = null;
-    },
-    editRecord(record) {
-        this.selectedRecord = { ...record }; 
-        this.showEditRecordModal = true;
+        async viewMovements(firebaseId) {
+            this.$router.push({ name: "Movements", params: { recordId: firebaseId } });
         },
 
-      updateRecordInList(updatedRecord) {
-  
-        const index = this.records.findIndex((r) => r.firebaseId === updatedRecord.firebaseId);
-        if (index !== -1) {
-            this.records.splice(index, 1, updatedRecord);
-        }
-      },
-      async saveRecord(newRecord) {
-        try {
-          
-          const response = await axios.post("http://localhost:5000/api/record", newRecord);
-          const savedRecord = response.data;
-  
-          
-          this.records.push({
-            ...newRecord,
-            firebaseId: savedRecord.id,
-          });
-          this.closeNewRecordModal();
-        } catch (error) {
-          console.error("Error al guardar el expediente:", error.response?.data || error.message);
-          alert("No se pudo guardar el expediente. Intenta nuevamente.");
-        }
-      },
-      async deleteRecord(firebaseId) {
-        try {
-            await axios.delete(`http://localhost:5000/api/record/${firebaseId}`);
-            this.records = this.records.filter((record) => record.firebaseId !== firebaseId);
-            console.log(`Registro con ID ${firebaseId} eliminado exitosamente.`);
-        } catch (error) {
-            console.error("Error al eliminar el expediente:", error.response?.data || error.message);
-            alert("No se pudo eliminar el expediente. Intenta nuevamente.");
-        }
+
+        handleSearch() {
+            console.log("Buscando:", this.searchQuery);
+        },
+        openNewRecordModal() {
+            this.showNewRecordModal = true;
+        },
+        closeNewRecordModal() {
+            this.showNewRecordModal = false;
         },
 
-      exportRecords() {
-        console.log("Exportando registros...");
-      },
+        closeEditRecordModal() {
+        this.showEditRecordModal = false;
+        this.selectedRecord = null;
+        },
+        editRecord(record) {
+            this.selectedRecord = { ...record }; 
+            this.showEditRecordModal = true;
+        },
+
+        updateRecordInList(updatedRecord) {
+    
+            const index = this.records.findIndex((r) => r.firebaseId === updatedRecord.firebaseId);
+            if (index !== -1) {
+                this.records.splice(index, 1, updatedRecord);
+            }
+        },
+        async saveRecord(newRecord) {
+            try {
+            
+            const response = await axios.post("http://localhost:5000/api/record", newRecord);
+            const savedRecord = response.data;
+    
+            
+            this.records.push({
+                ...newRecord,
+                firebaseId: savedRecord.id,
+            });
+            this.closeNewRecordModal();
+            } catch (error) {
+            console.error("Error al guardar el expediente:", error.response?.data || error.message);
+            alert("No se pudo guardar el expediente. Intenta nuevamente.");
+            }
+        },
+        async deleteRecord(firebaseId) {
+            try {
+                await axios.delete(`http://localhost:5000/api/record/${firebaseId}`);
+                this.records = this.records.filter((record) => record.firebaseId !== firebaseId);
+                console.log(`Registro con ID ${firebaseId} eliminado exitosamente.`);
+            } catch (error) {
+                console.error("Error al eliminar el expediente:", error.response?.data || error.message);
+                alert("No se pudo eliminar el expediente. Intenta nuevamente.");
+            }
+            },
+
+        exportRecords() {
+            console.log("Exportando registros...");
+        },
     },
     mounted() {
       this.fetchRecords(); 
