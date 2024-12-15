@@ -161,7 +161,7 @@
       },
       async fetchExpedientes() {
         try {
-          const response = await axios.get("http://localhost:5000/api/record");
+          const response = await axios.get("https://servermygestorrw-production.up.railway.app/api/record");
           this.expedientesExistentes = response.data.map((expedient) => ({
             firebaseId: expedient.id,
             caso: expedient.caso,
@@ -173,7 +173,7 @@
       async updateAudience() {
         try {
           const response = await axios.put(
-            `http://localhost:5000/api/audience/${this.recordId}/${this.editedAudience.id}`,
+            `https://servermygestorrw-production.up.railway.app/api/audience/${this.recordId}/${this.editedAudience.id}`,
             {
               fecha: this.editedAudience.fecha,
               hora: this.editedAudience.hora,

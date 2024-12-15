@@ -82,7 +82,7 @@
             try {
                 // Llamada a la API para obtener el record desde Firebase
                 const response = await axios.get(
-                `http://localhost:5000/api/record/${this.recordId}`
+                `https://servermygestorrw-production.up.railway.app/api/record/${this.recordId}`
                 );
 
                 // Almacena el ID del documento del record
@@ -97,7 +97,7 @@
       async fetchMovements() {
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/movement/${this.recordId}`
+            `https://servermygestorrw-production.up.railway.app/api/movement/${this.recordId}`
           );
           this.movements = response.data;
         } catch (error) {
@@ -112,7 +112,7 @@
       },
       async deleteMovement(movementId) {
         try {
-          await axios.delete(`http://localhost:5000/api/movement/${this.recordId}/${movementId}`);
+          await axios.delete(`https://servermygestorrw-production.up.railway.app/api/movement/${this.recordId}/${movementId}`);
           this.movements = this.movements.filter((m) => m.id !== movementId);
           alert("Movement deleted successfully.");
         } catch (error) {
@@ -132,7 +132,7 @@
       async updateMovement(updatedMovement) {
         try {
           const response = await axios.put(
-            `http://localhost:5000/api/movement/${updatedMovement.id}`,
+            `https://servermygestorrw-production.up.railway.app/api/movement/${updatedMovement.id}`,
             updatedMovement
           );
           console.log("Movement updated successfully:", response.data);

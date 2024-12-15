@@ -103,7 +103,7 @@ export default {
     async fetchUserDocuments() {
       try {
         console.log("Fetching documents for userId:", this.userId); // Depuración
-        const response = await axios.get(`http://localhost:5000/api/documents/user-documents?userId=4545`);//${this.userId}
+        const response = await axios.get(`https://servermygestorrw-production.up.railway.app/api/documents/user-documents?userId=4545`);//${this.userId}
         this.userDocuments = response.data.documents;
         console.log("Documents fetched:", this.userDocuments); // Depuración
       } catch (error) {
@@ -121,7 +121,7 @@ export default {
           documentoSeleccionado: this.editableRecord.documentoSeleccionado,
         };
 
-        await axios.put(`http://localhost:5000/api/record/${this.editableRecord.firebaseId}`, payload);
+        await axios.put(`https://servermygestorrw-production.up.railway.app/api/record/${this.editableRecord.firebaseId}`, payload);
 
         this.$emit("save", this.editableRecord);
         this.closeModal();

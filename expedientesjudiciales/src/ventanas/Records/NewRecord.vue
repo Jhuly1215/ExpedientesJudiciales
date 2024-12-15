@@ -137,7 +137,7 @@
             formData.append("archivo", this.newRecord.archivo); // Adjuntar archivo solo si existe
             }
 
-            const response = await axios.post("http://localhost:5000/api/record", formData, {
+            const response = await axios.post("https://servermygestorrw-production.up.railway.app/api/record", formData, {
             headers: { "Content-Type": "multipart/form-data" },
             });
 

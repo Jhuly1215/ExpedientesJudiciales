@@ -138,7 +138,7 @@
         async fetchRecords() {
             try {
                 
-                const response = await axios.get("http://localhost:5000/api/record");
+                const response = await axios.get("https://servermygestorrw-production.up.railway.app/api/record");
                 this.records = response.data.map((doc) => ({
                 ...doc,
                 firebaseId: doc.firebaseId || doc.id,
@@ -185,7 +185,7 @@
         async saveRecord(newRecord) {
             try {
             
-            const response = await axios.post("http://localhost:5000/api/record", newRecord);
+            const response = await axios.post("https://servermygestorrw-production.up.railway.app/api/record", newRecord);
             const savedRecord = response.data;
     
             
@@ -201,7 +201,7 @@
         },
         async deleteRecord(firebaseId) {
             try {
-                await axios.delete(`http://localhost:5000/api/record/${firebaseId}`);
+                await axios.delete(`https://servermygestorrw-production.up.railway.app/api/record/${firebaseId}`);
                 this.records = this.records.filter((record) => record.firebaseId !== firebaseId);
                 console.log(`Registro con ID ${firebaseId} eliminado exitosamente.`);
             } catch (error) {

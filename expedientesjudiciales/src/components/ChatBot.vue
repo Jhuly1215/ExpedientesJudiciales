@@ -49,7 +49,7 @@
         this.messages.push({ text: this.userMessage, sender: "user" });
 
         try {
-            const response = await axios.post("http://localhost:5000/api/chat", {
+            const response = await axios.post("https://servermygestorrw-production.up.railway.app/api/chat", {
             message: this.userMessage,
             });
 

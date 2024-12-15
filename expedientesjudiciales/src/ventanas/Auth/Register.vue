@@ -91,7 +91,7 @@
   
         try {
           // Llamada al backend para registrar el usuario
-          const response = await axios.post("http://localhost:5000/api/user", {
+          const response = await axios.post("https://servermygestorrw-production.up.railway.app/api/user", {
             email: this.form.email,
             name: this.form.name,
             id: this.form.id,

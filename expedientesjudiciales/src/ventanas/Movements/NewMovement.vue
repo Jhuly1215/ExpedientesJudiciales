@@ -103,7 +103,7 @@
 
                 // Enviar la solicitud al backend
                 const response = await axios.post(
-                `http://localhost:5000/api/movement/${this.recordId}`,
+                `https://servermygestorrw-production.up.railway.app/api/movement/${this.recordId}`,
                 this.newMovement
                 );
                 console.log("Movement saved successfully:", response.data);

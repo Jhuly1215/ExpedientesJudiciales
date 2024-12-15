@@ -77,7 +77,7 @@
     methods: {
       async fetchAudiences() {
         try {
-          const response = await axios.get(`http://localhost:5000/api/audience/${this.recordId}`);
+          const response = await axios.get(`https://servermygestorrw-production.up.railway.app/api/audience/${this.recordId}`);
           this.audiences = response.data;
         } catch (error) {
           console.error("Error fetching audiences:", error.response?.data || error.message);
@@ -99,7 +99,7 @@
       },
       async deleteAudience(audienceId) {
         try {
-          await axios.delete(`http://localhost:5000/api/audience/${this.recordId}/${audienceId}`);
+          await axios.delete(`https://servermygestorrw-production.up.railway.app/api/audience/${this.recordId}/${audienceId}`);
           this.audiences = this.audiences.filter((audience) => audience.id !== audienceId);
           alert("Audience deleted successfully.");
         } catch (error) {

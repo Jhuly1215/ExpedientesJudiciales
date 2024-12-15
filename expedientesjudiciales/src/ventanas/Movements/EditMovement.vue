@@ -82,7 +82,7 @@
             console.log("Updating movement with Movement ID:", this.editedMovement.id);
 
             const response = await axios.put(
-            `http://localhost:5000/api/movement/${this.recordId}/${this.editedMovement.id}`,
+            `https://servermygestorrw-production.up.railway.app/api/movement/${this.recordId}/${this.editedMovement.id}`,
             this.editedMovement
             );
 
