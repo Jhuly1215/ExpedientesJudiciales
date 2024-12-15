@@ -1,5 +1,5 @@
 const { db } = require('../../config/firebaseConfig');
-const { collection, query, where, getDocs, addDoc, doc, deleteDoc } = require('firebase/firestore');
+const { collection, query, where, getDocs, addDoc, doc, deleteDoc, updateDoc, getDoc} = require('firebase/firestore');
 
 
 // Obtener movimientos de un expediente
@@ -68,5 +68,45 @@ const deleteMovement = async (req, res) => {
       res.status(500).json({ error: "Error al eliminar el movimiento", details: error.message });
     }
 };
+const updateMovement = async (req, res) => {
+  const { recordId, movementId } = req.params; // Obtener IDs de la ruta
+  console.log("Updating movement within record:", recordId, "Movement ID:", movementId); // Debug
+
+  const { fecha, movimiento, sede, tipo, detalles } = req.body;
+
+  // Validar los campos requeridos
+  if (!fecha && !movimiento && !sede && !tipo && !detalles) {
+    return res
+      .status(400)
+      .json({ error: "At least one field must be provided to update the movement." });
+  }
+
+  try {
+    // Referencia al documento en la subcolección
+    const movementRef = doc(db, `records/${recordId}/movements`, movementId);
+
+    // Verificar si el documento existe antes de actualizar
+    const docSnapshot = await getDoc(movementRef);
+    if (!docSnapshot.exists()) {
+      return res.status(404).json({ error: "Movement not found." });
+    }
+
+    // Actualizar los campos enviados
+    const updatedFields = {};
+    if (fecha) updatedFields.fecha = fecha;
+    if (movimiento) updatedFields.movimiento = movimiento;
+    if (sede) updatedFields.sede = sede;
+    if (tipo) updatedFields.tipo = tipo;
+    if (detalles) updatedFields.detalles = detalles;
+
+    await updateDoc(movementRef, updatedFields);
+
+    res.status(200).json({ message: "Movement updated successfully", id: movementId });
+  } catch (error) {
+    console.error("Error updating movement:", error.message);
+    res.status(500).json({ error: "Failed to update movement", details: error.message });
+  }
+};
+
   
-module.exports = { getMovements, deleteMovement, addMovement};
+module.exports = { getMovements, deleteMovement, addMovement, updateMovement};

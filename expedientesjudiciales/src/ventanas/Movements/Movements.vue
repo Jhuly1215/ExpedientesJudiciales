@@ -27,7 +27,7 @@
             <td>{{ movement.tipo }}</td>
             <td>{{ movement.detalles }}</td>
             <td>
-              <button class="btn-edit" @click="editMovement(movement)">✏️</button>
+              <button class="btn-edit" @click="openEditMovementModal(movement)">✏️</button>
               <button class="btn-delete" @click="deleteMovement(movement.id)">🗑️</button>
             </td>
           </tr>
@@ -47,6 +47,14 @@
         @close="closeNewMovementModal"
         @save="fetchMovements"
       />
+      <EditMovement
+        v-if="showEditMovementModal"
+        :show="showEditMovementModal"
+        :recordId="recordId"
+        :movement="selectedMovement"
+        @close="closeEditMovementModal"
+        @update="fetchMovements"
+      />
     </div>
 </template>
   
@@ -54,16 +62,18 @@
 <script>
   import axios from "axios";
   import NewMovement from "./NewMovement.vue";
-  
+  import EditMovement from "./EditMovement.vue";
   export default {
     components:{
         NewMovement,
+        EditMovement,
     },
     data() {
       return {
         recordId: this.$route.params.recordId, // Obtenemos el ID del record desde los parámetros
         movements: [], // Lista de movimientos
         showNewMovementModal: false,
+        showEditMovementModal: false,
         recordDocumentId: "", // ID del documento del record
       };
     },
@@ -110,11 +120,38 @@
           alert("Failed to delete movement. Try again.");
         }
       },
-      editMovement(movement) {
-        // Lógica para editar un movimiento (puedes agregar un modal similar al de NewMovement)
-        console.log("Edit Movement:", movement);
+      openEditMovementModal(movement) {
+        this.selectedMovement = { ...movement }; // Clonar el movimiento seleccionado
+        this.showEditMovementModal = true;
       },
+      closeEditMovementModal() {
+        this.showEditMovementModal = false;
+        this.selectedMovement = null; // Limpiar el movimiento seleccionado
+      },
+      async updateMovement(updatedMovement) {
+        try {
+          const response = await axios.put(
+            `http://localhost:5000/api/movement/${updatedMovement.id}`,
+            updatedMovement
+          );
+          console.log("Movement updated successfully:", response.data);
+
+          // Actualizar la lista de movimientos
+          const index = this.movements.findIndex((m) => m.id === updatedMovement.id);
+          if (index !== -1) {
+            this.movements.splice(index, 1, updatedMovement);
+          }
+
+          this.closeEditMovementModal();
+        } catch (error) {
+          console.error("Error updating movement:", error.response?.data || error.message);
+          alert("Failed to update movement. Please try again.");
+        }
+      },
+
+
     },
+
     mounted() {
       this.fetchMovements();
       this.fetchRecord();
