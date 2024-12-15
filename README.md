@@ -123,6 +123,5 @@ The backend API is built with Express and integrates seamlessly with Firebase. B
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-## Contact
-For any inquiries or support, please contact [support@mygestor.com](mailto:support@mygestor.com).
+
 
