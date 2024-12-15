@@ -1,5 +1,5 @@
 const { db } = require('../../config/firebaseConfig');
-const { collection, addDoc, getDocs, doc, getDoc, deleteDoc } = require('firebase/firestore');
+const { collection, addDoc, getDocs, doc, getDoc, deleteDoc, updateDoc } = require('firebase/firestore');
 
 // Obtener todas las audiencias de un expediente
 const getAudiencesByRecordId = async (req, res) => {
@@ -64,9 +64,52 @@ const deleteAudience = async (req, res) => {
     res.status(500).json({ error: 'Error deleting audience', details: error.message });
   }
 };
+const updateAudience = async (req, res) => {
+  const { recordId, audienceId } = req.params; // Obtener IDs de la ruta
+  const { fecha, hora, juez, participantes, estado, expedientes, descripcion, actaUrl,} = req.body;
 
+  // Validar que al menos un campo sea proporcionado para actualizar
+  if (
+    !fecha && !hora && !juez && !participantes && !estado && !expedientes && !descripcion && !actaUrl
+  ) {
+    return res
+      .status(400)
+      .json({ error: "At least one field must be provided to update the audience." });
+  }
+
+  try {
+    // Referencia al documento de la audiencia en la subcolección
+    const audienceRef = doc(db, `records/${recordId}/audiences`, audienceId);
+
+    // Verificar si el documento existe antes de actualizar
+    const docSnapshot = await getDoc(audienceRef);
+    if (!docSnapshot.exists()) {
+      return res.status(404).json({ error: "Audience not found." });
+    }
+
+    // Construir los campos actualizados
+    const updatedFields = {};
+    if (fecha) updatedFields.fecha = fecha;
+    if (hora) updatedFields.hora = hora;
+    if (juez) updatedFields.juez = juez;
+    if (participantes) updatedFields.participantes = JSON.parse(participantes);
+    if (estado) updatedFields.estado = estado;
+    if (expedientes) updatedFields.expedientes = JSON.parse(expedientes);
+    if (descripcion) updatedFields.descripcion = descripcion;
+    if (actaUrl) updatedFields.actaUrl = actaUrl;
+
+    // Actualizar el documento en Firestore
+    await updateDoc(audienceRef, updatedFields);
+
+    res.status(200).json({ message: "Audience updated successfully", id: audienceId });
+  } catch (error) {
+    console.error("Error updating audience:", error.message);
+    res.status(500).json({ error: "Failed to update audience", details: error.message });
+  }
+};
 module.exports = {
   getAudiencesByRecordId,
   createAudience,
   deleteAudience,
+  updateAudience,
 };

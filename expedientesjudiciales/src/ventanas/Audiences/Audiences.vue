@@ -30,7 +30,7 @@
           <p><strong>Description:</strong> {{ audience.descripcion }}</p>
           <p><strong>Act:</strong> <a :href="audience.actaUrl" target="_blank">{{ audience.actaUrl }}</a></p>
           <div class="actions">
-            <button class="btn-edit" @click="editAudience(audience)">✏️</button>
+            <<button class="btn-edit" @click="openEditAudienceModal(audience)">✏️</button>
             <button class="btn-delete" @click="deleteAudience(audience.id)">🗑️</button>
           </div>
         </div>
@@ -44,22 +44,33 @@
         @close="closeNewAudienceModal"
         @save="fetchAudiences"
       />
+      <EditAudience
+        v-if="showEditAudienceModal"
+        :show="showEditAudienceModal"
+        :recordId="recordId"
+        :audience="selectedAudience"
+        @close="closeEditAudienceModal"
+        @update="fetchAudiences"
+      />
     </div>
   </template>
   
   <script>
   import axios from "axios";
   import NewAudience from "./NewAudience.vue";
+  import EditAudience from "./EditAudience.vue";
   
   export default {
     components: {
       NewAudience,
+      EditAudience,
     },
     data() {
       return {
         recordId: this.$route.params.recordId,
         audiences: [],
         showNewAudienceModal: false,
+        showEditAudienceModal: false,
         recordDocumentId: "", // ID del documento del record
       };
     },
@@ -77,6 +88,14 @@
       },
       closeNewAudienceModal() {
         this.showNewAudienceModal = false;
+      },
+      openEditAudienceModal(audience) {
+        this.selectedAudience = { ...audience }; // Clonar la audiencia seleccionada
+        this.showEditAudienceModal = true;
+      },
+      closeEditAudienceModal() {
+        this.showEditAudienceModal = false;
+        this.selectedAudience = null; // Limpiar la audiencia seleccionada
       },
       async deleteAudience(audienceId) {
         try {
