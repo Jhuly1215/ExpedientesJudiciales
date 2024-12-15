@@ -28,12 +28,10 @@ export default {
   },
   methods: {
     handleLogout() {
-      // Eliminar el token del localStorage
       localStorage.removeItem("authToken");
-
-      // Emitir evento de cierre de sesión al componente padre
-      this.$emit("logout");
-
+      localStorage.removeItem("userId");
+      alert("Logged out successfully!");
+      
       // Redirigir al login
       this.$router.push("/login");
     },

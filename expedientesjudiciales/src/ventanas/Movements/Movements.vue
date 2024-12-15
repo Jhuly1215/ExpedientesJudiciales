@@ -112,14 +112,15 @@
       },
       async deleteMovement(movementId) {
         try {
-          await axios.delete(`http://localhost:5000/api/movement/${movementId}`);
+          await axios.delete(`http://localhost:5000/api/movement/${this.recordId}/${movementId}`);
           this.movements = this.movements.filter((m) => m.id !== movementId);
           alert("Movement deleted successfully.");
         } catch (error) {
           console.error("Error al eliminar el movimiento:", error.response?.data || error.message);
-          alert("Failed to delete movement. Try again.");
+          alert("Failed to delete movement. Please try again.");
         }
       },
+
       openEditMovementModal(movement) {
         this.selectedMovement = { ...movement }; // Clonar el movimiento seleccionado
         this.showEditMovementModal = true;

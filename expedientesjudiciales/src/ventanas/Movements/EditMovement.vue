@@ -79,21 +79,23 @@
       async updateMovement() {
         try {
             console.log("Updating movement with Record ID:", this.recordId);
-            console.log("Updating movement with Movement ID:", this.movement.id);
+            console.log("Updating movement with Movement ID:", this.editedMovement.id);
 
             const response = await axios.put(
-            `http://localhost:5000/api/movement/${this.recordId}/${this.movement.id}`,
-            this.movement
+            `http://localhost:5000/api/movement/${this.recordId}/${this.editedMovement.id}`,
+            this.editedMovement
             );
 
             console.log("Movement updated successfully:", response.data);
-            this.$emit("update");
+            this.$emit("update", this.editedMovement); // Envía el movimiento actualizado al padre
             this.closeModal();
         } catch (error) {
             console.error("Error updating movement:", error.response?.data || error.message);
             alert("Failed to update movement. Please try again.");
         }
         },
+
+        
 
     },
   };

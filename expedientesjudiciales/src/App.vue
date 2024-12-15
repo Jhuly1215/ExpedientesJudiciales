@@ -28,16 +28,18 @@
         <router-view @updateTitle="updatePageTitle" />
       </main>
     </div>
+    <ChatBot />
   </div>
 </template>
 
 <script>
 import SideBar from "./components/base/SideBar.vue";
-
+import ChatBot from "./components/ChatBot.vue";
 export default {
   name: "App",
   components: {
     SideBar,
+    ChatBot,
   },
   data() {
     return {
